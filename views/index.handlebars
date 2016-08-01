@@ -1,0 +1,64 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h2>News Scrape</h2>
+            <br />
+        </div>
+    </div>
+    <div class="row">
+       
+    </div>
+    <div class="row">
+   		<!-- LEFT COLUMN -->
+      	<div class="col-md-4">
+            <div class="twt-wrapper">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        Add A Comment To the Article
+                    </div>
+                    <div class="panel-body">
+                        <textarea class="form-control" placeholder="Enter Comment..." rows="10"></textarea>
+                        <a href="#" class="btn btn-primary btn-sm pull-right">Add Comment</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- CENTER COLUMN -->
+        <div class="col-md-4">
+            <div class="twt-wrapper">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        Article
+                    </div>
+                    <div class="panel-body">
+                        <ul class="media-list">
+                            <li class="media">
+                                <div class="media-body">
+                                    {{#each scraped}}
+                                    <span class="text-muted pull-right">
+                                        {{title}}
+                                    </span>
+                                    {{/each}}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- RIGHT COLUMN -->
+        <div class="col-md-4">
+            <div class="twt-wrapper">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        Comments About Article
+                    </div>
+                    <div class="panel-body">
+                        <textarea class="form-control" placeholder="Enter here for tweet..." rows="3"></textarea>
+                        <a href="#" class="btn btn-primary btn-sm pull-right">Delete Comment</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
