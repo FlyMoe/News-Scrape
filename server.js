@@ -28,7 +28,7 @@ var databaseUrl = "news";
 var articles = ["scrapedData"];
 
 // Hook mongojs configuration to the db variable
-var db = mongojs(databaseUrl, collections);
+var db = mongojs(databaseUrl, articles);
 db.on('error', function(err) {
   console.log('Database Error:', err);
 });
@@ -44,57 +44,68 @@ app.get('/', function(req, res) {
 
 		var $ = cheerio.load(html);
 
+		// Before inserting anything in the collection delete what's there
+		//db.scrapedData.remove({});
+
 		// an empty array to save the data that we'll scrape
 		var result = [];
 		$('h2.story-heading').each(function(i, element){
 			//result.push($(this).text());
-		 // save the request body as an object called scraped
-		  var scraped = {'title':$(this).text(), 'summary':$('p.summary').text()};
-		  console.log("Scraped:" +scraped.title);
-		  console.log("summary:" +scraped.summary);
-		  // Insert scraped object, since it's already an object
-		  res.render('index', {scraped: scraped});
+		 	// save the request body as an object called scraped
+		 	var title = $(this).text().trim();
+		 	//var summary = $('p.summary').text().trim();
+			//var articles = {'title':title, 'summary':summary, comments:""};
+			var articles = {'title':title, comments:""};
+			//console.log("articles:" +articles.title);
+			  //console.log("summary:" +scraped.summary);
+			  // Insert scraped object, since it's already an object
+
+			// Check if title is missing. If it is, don't insert a blank title into
+			// the database.
+			if (title !== "") {
+				 // Insert article into mongo
+				 db.scrapedData.insert(articles, function(err, saved) {
+				    // show any errors
+				    if (err) {
+				      console.log(err);
+				    } else {
+				      result.push(articles);
+				    }
+		  		});
+			}		
 		});
-
-		
-
-		  // db.scrapedData.insert(scraped, function(err, saved) {
-		  //   // show any errors
-		  //   if (err) {
-		  //     console.log(err);
-		  //   } else {
-		  //     // otherwise, send the response to the client (for AJAX success function)
-		  //     console.log(saved);
-		  //     //res.send(saved);
-		  //   }
-		  // });
-
-		
+		// Find all articles and send the data over to handlebars
+		db.scrapedData.find({}, function(err,data)
+		{
+			res.render('index', {data});
+		})
 	});
 	
 });
 
 
-// SUBMIT COMMENT
-app.post('/submit', function(req, res) {
-	// store the comment object in a variable
+// ADD COMMENT
+app.post('/comment', function(req, res) {
+	// set the comment variable
 	var comment = req.body;
-	console.log(comment.comment, comment.posted, comment.article_id);
 	// update the database with the new comment
-	db.articles.update({"_id": (mongojs.ObjectId(comment.article_id))}, {$addToSet: {comments: {comment: comment.comment, posted: comment.posted}}}, function(err, docs) {
-		console.log(docs);
-	}); // end db.articles.update()
-}); // end app.get('/submit')
+	db.scrapedData.update({"_id": mongojs.ObjectId(comment.article_id)},  {$set: {'comments': comment.comment}}, function(err, docs) {
+		 // show any errors
+		if (err) {console.log(err);}
+		res.redirect('/');
+	});
+});
 
 // DELETE COMMENT
 app.post('/delete', function(req, res) {	
-	// set the comment to delete details in a variable
+	// set the delete_comment variable
 	var delete_comment = req.body;
-	// delete the comment form the database
-	db.articles.update({"_id": (mongojs.ObjectId(delete_comment.article_id))}, {$pull: {comments: {posted: delete_comment.posted}}}, function(err, docs) {
-		console.log(docs);
-	}); // end db.articles.update()
-}); // end app.post('/delete')
+	// delete the comment from the database
+	db.scrapedData.update({"_id": mongojs.ObjectId(delete_comment.article_id)}, {$set: {'comments': delete_comment.comment}}, function(err, docs) {
+		if (err) {console.log(err);}
+		res.redirect('/');
+	});
+});
 
 
 // LISTENER
