@@ -19,7 +19,7 @@
                     {{#each data}}
                     <form action="/comment" method='POST'>   
                         <div class="panel-body">
-                            <textarea name="comment" class="form-control" placeholder="{{this._id}}" rows="10"></textarea>
+                            <textarea name="comment" class="form-control" placeholder="Enter comment...." rows="10"></textarea>
                             <!-- <a href="#" id="add" class="btn btn-primary btn-sm pull-right">Add Comment</a> --> 
                             <input type="hidden" name="article_id" value="{{this._id}}"">
                             <button class="btn btn-primary btn-sm pull-right" type="submit" id="add">Add Comment</button>
@@ -48,6 +48,10 @@
                                 </div>
                             </li>
                         </ul>
+                        <form action="/next" method='get'>
+                            <input type="hidden" name="article_id" value="{{this._id}}"">  
+                            <button id="delete" class="btn btn-primary btn-sm pull-right" type="submit">Next Article</a>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -59,12 +63,13 @@
                     <div class="panel-heading">
                         Comments About Article
                     </div>
-                    <form action="/delete" method='POST'>   
+                    <form action="/delete" method='post'>   
                     {{#each data}}
                     <div class="panel-body">
                         <textarea class="form-control" rows="3">{{this.comments}}</textarea>                      
                         <!-- <a href="#" id="delete" class="btn btn-primary btn-sm pull-right">Delete Comment</a> -->
-                        <button class="btn btn-primary btn-sm pull-right" type="submit" id="delete">Delete Comment</button>
+                        <input type="hidden" name="article_id" value="{{this._id}}"">
+                        <button class="btn btn-primary btn-sm pull-right" type="submit" id="delete">Delete Comment</button>  
                     </div>
                     {{/each}}
                     </form>
