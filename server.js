@@ -24,9 +24,9 @@ app.use(bodyParser.urlencoded({
 
 // Database configuration
 var mongojs = require('mongojs');
-var databaseUrl = "news";
+//var databaseUrl = "news";
 var articles = ["scrapedData"];
-//var databaseUrl = "mongodb://heroku_zkwrthww:gp55nhv3shtgrb6ui7kad3piti@ds031865.mlab.com:31865/heroku_zkwrthww";
+var databaseUrl = "mongodb://heroku_zkwrthww:gp55nhv3shtgrb6ui7kad3piti@ds031865.mlab.com:31865/heroku_zkwrthww";
 
 // Hook mongojs configuration to the db variable
 var db = mongojs(databaseUrl, articles);
