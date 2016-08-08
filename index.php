@@ -1,1 +1,1 @@
-<?php include_once("views/index.handlebars"); ?>
+<?php include_once("views/main.handlebars"); ?>
