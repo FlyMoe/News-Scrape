@@ -5,6 +5,6 @@ This application scrapes the New York Times website for articles. It then lets y
 To view the application go here: [Heroku](http://damp-sea-33713.herokuapp.com/)
 
 # Technology Used
-Node.js
-MongoDB
-Bootstrap
+Node.js<br />
+MongoDB<br />
+Bootstrap<br />
